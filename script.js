@@ -2,11 +2,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // ======= НАВИГАЦИЯ ПО СЕКЦИЯМ =======
   const sectionLinks = document.querySelectorAll('a[data-section]');
   const sections = document.querySelectorAll('.content-section');
-
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
   let activePlayerId = null;
 
-  // Всплывающие карточки игроков (оставил как есть)
+  // ======= ВСПЛЫВАЮЩИЕ КАРТОЧКИ ИГРОКОВ =======
   const popup = document.getElementById('playerPopup');
   const popupAvatar = document.getElementById('popupAvatar');
   const popupName = document.getElementById('popupName');
@@ -23,33 +22,34 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   document.querySelectorAll('.players-list li a').forEach(link => {
-  const id = link.dataset.id;
-  if (!id || !playerData[id]) return;
-  const data = playerData[id];
+    const id = link.dataset.id;
+    if (!id || !playerData[id]) return;
+    const data = playerData[id];
+    const href = link.getAttribute('href'); // берём путь из ссылки
 
-  if (isTouch) {
-    link.addEventListener('click', e => {
-      if (activePlayerId !== id) {
-        e.preventDefault(); // блокируем переход только на первый клик
-        activePlayerId = id;
-        showPopup(link, data, id);
-      } else {
-        // второй клик — разрешаем переход
+    if (isTouch) {
+      link.addEventListener('click', e => {
+        if (activePlayerId !== id) {
+          e.preventDefault();
+          activePlayerId = id;
+          showPopup(link, data, href);
+        } else {
+          activePlayerId = null;
+        }
+      });
+    } else {
+      link.addEventListener('mouseenter', () => showPopup(link, data, href));
+      link.addEventListener('mouseleave', () => {
+        popup.style.display = 'none';
         activePlayerId = null;
-      }
-    });
-  } else {
-    link.addEventListener('mouseenter', () => showPopup(link, data, id));
-    link.addEventListener('mouseleave', () => {
-      if (popup) popup.style.display = 'none';
-      activePlayerId = null;
-    });
-  }
-});
-  function showPopup(link, data, id) {
+      });
+    }
+  });
+
+  function showPopup(link, data, href) {
     popupAvatar.src = data.img;
     popupName.textContent = data.name;
-    popupName.href = `Players/${id}.html`;
+    popupName.href = href;
 
     popupSkills.textContent = data.skills;
     popupExp.textContent = data.experience;
@@ -75,14 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
       let top = rect.top + scrollY;
       let left = rect.right + 20 + scrollX;
       const popupRect = popup.getBoundingClientRect();
-
-      if (left + popupRect.width > window.innerWidth) {
-        left = rect.left - popupRect.width - 20 + scrollX;
-      }
-      if (top + popupRect.height > window.innerHeight + scrollY) {
-        top = window.innerHeight + scrollY - popupRect.height - 20;
-        if (top < scrollY + 10) top = scrollY + 10;
-      }
+      if (left + popupRect.width > window.innerWidth) left = rect.left - popupRect.width - 20 + scrollX;
+      if (top + popupRect.height > window.innerHeight + scrollY) top = window.innerHeight + scrollY - popupRect.height - 20;
+      if (top < scrollY + 10) top = scrollY + 10;
 
       popup.style.top = `${top}px`;
       popup.style.left = `${left}px`;
@@ -107,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ======= МОДАЛКИ ДЛЯ ГАЛЕРЕЙ (только одна активная) =======
+  // ======= МОДАЛКИ ГАЛЕРЕЙ =======
   let activeGalleryModal = null;
 
   function removeCurrentModal() {
@@ -121,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.createElement('div');
     modal.className = 'imgModal';
     modal.style.cssText = `
-      display:none; /* Скрыт по умолчанию */
+      display:none;
       position:fixed;
       top:0; left:0; right:0; bottom:0;
       background:rgba(0,0,0,0.8);
@@ -132,26 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
 
     const modalImg = document.createElement('img');
-    modalImg.style.cssText = `
-      max-width:90vw;
-      max-height:90vh;
-      user-select:none;
-      pointer-events:none;
-    `;
+    modalImg.style.cssText = `max-width:90vw; max-height:90vh; user-select:none; pointer-events:none;`;
 
     const leftZone = document.createElement('div');
-    leftZone.style.cssText = `
-      position:absolute; left:0; top:0; bottom:0; width:30%; cursor:pointer;
-    `;
-
+    leftZone.style.cssText = `position:absolute; left:0; top:0; bottom:0; width:30%; cursor:pointer;`;
     const rightZone = document.createElement('div');
-    rightZone.style.cssText = `
-      position:absolute; right:0; top:0; bottom:0; width:30%; cursor:pointer;
-    `;
+    rightZone.style.cssText = `position:absolute; right:0; top:0; bottom:0; width:30%; cursor:pointer;`;
 
-    modal.appendChild(leftZone);
-    modal.appendChild(modalImg);
-    modal.appendChild(rightZone);
+    modal.append(leftZone, modalImg, rightZone);
     document.body.appendChild(modal);
 
     let currentIndex = 0;
@@ -161,10 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (index >= images.length) index = 0;
       currentIndex = index;
 
-      // Скрываем предыдущую открытую модалку, если она не эта
-      if (activeGalleryModal && activeGalleryModal !== modal) {
-        activeGalleryModal.style.display = 'none';
-      }
+      if (activeGalleryModal && activeGalleryModal !== modal) activeGalleryModal.style.display = 'none';
       activeGalleryModal = modal;
 
       modalImg.src = images[currentIndex].src;
@@ -173,45 +153,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     images.forEach((img, i) => {
       img.style.cursor = 'pointer';
-      img.addEventListener('click', () => {
-        showImage(i);
-      });
+      img.addEventListener('click', () => showImage(i));
     });
 
     modal.addEventListener('click', e => {
-      if (e.target === modal) {
-        modal.style.display = 'none';
-        activeGalleryModal = null;
-        return;
-      }
+      if (e.target === modal) { modal.style.display = 'none'; activeGalleryModal = null; return; }
       const x = e.clientX;
-      const screenWidth = window.innerWidth;
-      if (x < screenWidth * 0.3) showImage(currentIndex - 1);
-      else if (x > screenWidth * 0.7) showImage(currentIndex + 1);
-      else {
-        modal.style.display = 'none';
-        activeGalleryModal = null;
-      }
+      if (x < window.innerWidth * 0.3) showImage(currentIndex - 1);
+      else if (x > window.innerWidth * 0.7) showImage(currentIndex + 1);
+      else { modal.style.display = 'none'; activeGalleryModal = null; }
     });
 
-    leftZone.addEventListener('click', e => {
-      e.stopPropagation();
-      showImage(currentIndex - 1);
-    });
-
-    rightZone.addEventListener('click', e => {
-      e.stopPropagation();
-      showImage(currentIndex + 1);
-    });
+    leftZone.addEventListener('click', e => { e.stopPropagation(); showImage(currentIndex - 1); });
+    rightZone.addEventListener('click', e => { e.stopPropagation(); showImage(currentIndex + 1); });
 
     let touchStartX = 0;
-    modal.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].clientX;
-    });
-
+    modal.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; });
     modal.addEventListener('touchend', e => {
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchEndX - touchStartX;
+      const diff = e.changedTouches[0].clientX - touchStartX;
       if (diff > 50) showImage(currentIndex - 1);
       else if (diff < -50) showImage(currentIndex + 1);
     });
@@ -219,32 +178,22 @@ document.addEventListener('DOMContentLoaded', () => {
     return { showImage, modal };
   }
 
-// ==== Создаем галереи только для активной секции
   function setupGalleryForSection(sectionId) {
-  removeCurrentModal(); // удаляем предыдущую модалку
-
-  requestAnimationFrame(() => {
-    const tabContent = document.getElementById(`tab-${sectionId}`);
-    if (!tabContent) return;
-
-    if (sectionId === 'gallery') {
+    removeCurrentModal();
+    requestAnimationFrame(() => {
+      const tabContent = document.getElementById(`tab-${sectionId}`);
+      if (!tabContent) return;
       const images = Array.from(tabContent.querySelectorAll('.gallery img'));
-      if (images.length) {
-        const { showImage, modal } = createGalleryModal(images); // сохраняем результат
+      if (images.length) createGalleryModal(images);
+    });
+  }
 
-        // НЕ открываем showImage() здесь!
-        // просто создаём модалку, и она сама откроется по клику
-      }
-    }
-  });
-} 
-  // ======= Функция переключения секций с настройкой галереи =======
+  // ======= ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ =======
   function switchSection(sectionId) {
     sections.forEach(sec => sec.classList.remove('active'));
     const targetSection = document.getElementById(sectionId);
     if (targetSection) targetSection.classList.add('active');
 
-    // Смена фона
     if (sectionId === 'abi') {
       document.body.style.background = "url('123.jpg') no-repeat center center";
       document.body.style.backgroundSize = "cover";
@@ -256,19 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
     setupGalleryForSection(sectionId);
   }
 
-  // === Восстановление последней секции с загрузкой галереи ===
   const savedSection = localStorage.getItem('activeSection');
-  if (savedSection && document.getElementById(savedSection)) {
-    switchSection(savedSection);
-  } else {
-    switchSection('about');
-  }
+  if (savedSection && document.getElementById(savedSection)) switchSection(savedSection);
+  else switchSection('about');
 
-  // Обработчики кликов по ссылкам секций
   sectionLinks.forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
-      const target = link.getAttribute('data-section');
+      const target = link.dataset.section;
       if (target) {
         localStorage.setItem('activeSection', target);
         switchSection(target);
@@ -276,81 +220,59 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Меню для мобилок
+  // ======= МЕНЮ ДЛЯ МОБИЛОК =======
   const menuToggle = document.querySelector('.menu-toggle');
   const navLinks = document.querySelector('.nav-links');
   if (menuToggle && navLinks) {
-    menuToggle.addEventListener('click', () => {
-      navLinks.classList.toggle('open');
-    });
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
     navLinks.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        navLinks.classList.remove('open');
-      });
+      link.addEventListener('click', () => navLinks.classList.remove('open'));
     });
   }
 
-  // ======= ABI Tabs =====
+  // ======= ABI TABS =======
   const abiTabs = document.querySelectorAll('.abi-tab');
   const abiTabContents = document.querySelectorAll('.abi-tab-content');
-
   abiTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       const target = tab.dataset.tab;
-
       abiTabs.forEach(t => t.classList.remove('active'));
       abiTabContents.forEach(c => c.classList.remove('active'));
-
       tab.classList.add('active');
       const content = document.getElementById(`tab-${target}`);
       if (content) content.classList.add('active');
-      // ДОБАВЬ ЭТО:
-setupGalleryForSection(target);
+      setupGalleryForSection(target);
     });
   });
+
   // ======= CS2 MAP TABS =======
   const cs2TabButtons = document.querySelectorAll('#cs2 .map-tab');
   const cs2TabContents = document.querySelectorAll('#cs2 .tab-content');
   const cs2MapCards = document.querySelectorAll('#cs2 .map-card');
 
   function switchMapTab(map) {
-    // запоминаем выбранную карту
     localStorage.setItem('activeMap', map);
-
     cs2TabButtons.forEach(b => b.classList.remove('active'));
-    cs2TabContents.forEach(c => (c.style.display = 'none'));
-
+    cs2TabContents.forEach(c => c.style.display = 'none');
     const btn = document.querySelector(`#cs2 .map-tab[data-map="${map}"]`);
     const content = document.getElementById(`map-${map}`);
-
     if (btn) btn.classList.add('active');
     if (content) content.style.display = 'block';
   }
 
-  // клики по табам
   cs2MapCards.forEach(card => {
-  card.addEventListener('click', () => {
-    switchMapTab(card.dataset.map);
+    card.addEventListener('click', () => switchMapTab(card.dataset.map));
   });
-});
 
-  // при открытии секции cs2 — показать последнюю выбранную карту (или dust2)
   const savedMap = localStorage.getItem('activeMap') || 'dust2';
+  if (document.getElementById('cs2').classList.contains('active')) switchMapTab(savedMap);
 
-  // если уже на cs2 при загрузке
-  if (document.getElementById('cs2').classList.contains('active')) {
-    switchMapTab(savedMap);
-  }
-
-  // хук в твою функцию switchSection, чтобы при переходе в CS2 табы тоже выставлялись
   const _switchSection = switchSection;
   switchSection = function (sectionId) {
     _switchSection(sectionId);
-    if (sectionId === 'cs2') {
-      switchMapTab(localStorage.getItem('activeMap') || 'dust2');
-      
-    }
-  };  
+    if (sectionId === 'cs2') switchMapTab(localStorage.getItem('activeMap') || 'dust2');
+  };
 });
+
 
 
