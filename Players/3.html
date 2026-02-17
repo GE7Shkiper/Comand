@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Игорь [Пиво]</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main>
+    <h1>Игорь [Пиво]</h1>
+    <img src="../avatars/3.jpg" alt="Игорь" class="player-photo">
+
+    <div class="game-selector">
+      <label for="gameSelect">Выбери игру:</label>
+      <select id="gameSelect">
+        <option value="">-- Выбери --</option>
+        <option value="abi">ABI</option>
+        <option value="cs2">CS2</option>
+      </select>
+    </div>
+
+    <div id="abi" class="info-block">
+    <p><strong>Никнейм:</strong> кугельблитц</p>
+    <p><strong>Роль:</strong> Бог дроби, король ближнего боя</p>
+    <p><strong>Любимое оружие:</strong> Двустволка (и уверенность в себе)</p>
+    <p><strong>Опыт:</strong> 1 год, но каждое попадание — как суд божий</p>
+    <p><strong>Навыки:</strong> внезапные вырывы, ваншоты с угла, полное игнорирование снайперов</p>
+    <p><strong>Игровой стиль:</strong> «Подкрался — бахнул — ушёл красиво»</p>
+    <p><strong>Отличительная черта:</strong> не боится рашить даже через смоук, если слышит запах фрага</p>
+    <p><strong>Цель:</strong> доказать, что дробовик — не просто оружие, а образ жизни</p>
+    </div>
+
+    <div id="cs2" class="info-block">
+     <p><strong>Никнейм:</strong> Игорь [Пиво]</p>
+    <p><strong>Роль:</strong> Бывший AWP-командир, ныне философ на позиции</p>
+    <p><strong>Любимое оружие:</strong> Нет (он воюет сердцем и интуицией)</p>
+    <p><strong>Опыт:</strong> 5 лет на FACEIT, познал всё — от глока до отчаяния</p>
+    <p><strong>Навыки:</strong> резкие мувы, резче комментарии, и точность до смешного</p>
+    <p><strong>Стиль игры:</strong> «Встану здесь, может зайдут — может нет»</p>
+    <p><strong>Легенда команды:</strong> он кикает не людей — он кикает реальность</p>
+    <p><strong>Цель:</strong> доказать, что даже без оружия можно быть угрозой (особенно моральной)</p>
+    </div>
+
+    <a href="../index.html#players" class="back-link">← Назад к игрокам</a>
+  </main>
+
+  <script>
+    const gameSelect = document.getElementById('gameSelect');
+    const infoBlocks = document.querySelectorAll('.info-block');
+
+    gameSelect.addEventListener('change', () => {
+      infoBlocks.forEach(block => block.classList.remove('active'));
+      const selected = gameSelect.value;
+      if (selected) {
+        document.getElementById(selected).classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>GENSUXA [Муха]</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main>
+    <h1>Никита [Муха]</h1>
+    <img src="../avatars/4.jpg" alt="GENSUXA [Муха]" class="player-photo">
+
+    <div class="game-selector">
+      <label for="gameSelect">Выбери игру:</label>
+      <select id="gameSelect">
+        <option value="">-- Выбери --</option>
+        <option value="cs2">CS2</option>
+      </select>
+    </div>
+
+    <div id="cs2" class="info-block">
+    <p><strong>Никнейм:</strong> GENSUXA</p>
+    <p><strong>Роль:</strong> B-rush мастер, инициатор хаоса</p>
+    <p><strong>Любимое оружие:</strong> MAC-10 (и адреналин в крови)</p>
+    <p><strong>Опыт:</strong> 15 лет, из них 14 — в прыжке с пробелом на B</p>
+    <p><strong>Навыки:</strong> мгновенный заход, гранаты вслепую, стрельба на слух</p>
+    <p><strong>Игровой стиль:</strong> «Они не успеют даже моргнуть»</p>
+    <p><strong>Фирменная фраза:</strong> «Пацаны, просто летим!»</p>
+    <p><strong>Цель:</strong> превратить каждый раунд в взрывной спринт через дым и огонь</p>
+    </div>
+
+    <a href="../index.html#players" class="back-link">← Назад к игрокам</a>
+  </main>
+
+  <script>
+    const gameSelect = document.getElementById('gameSelect');
+    const infoBlocks = document.querySelectorAll('.info-block');
+
+    gameSelect.addEventListener('change', () => {
+      infoBlocks.forEach(block => block.classList.remove('active'));
+      const selected = gameSelect.value;
+      if (selected) {
+        document.getElementById(selected).classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>

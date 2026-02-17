@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ЯША ЛАВА [№1]</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main>
+    <h1>ЯША ЛАВА [№1]</h1>
+    <img src="../avatars/1.jpg" alt="Ваня" class="player-photo">
+
+    <div class="game-selector">
+      <label for="gameSelect">Выбери игру:</label>
+      <select id="gameSelect">
+        <option value="">-- Выбери --</option>
+        <option value="abi">ABI</option>
+        <option value="cs2">CS2</option>
+      </select>
+    </div>
+
+    <div id="abi" class="info-block">
+  <p><strong>Никнейм:</strong> VanekPe$</p>
+<p><strong>Роль:</strong> Тактик, командир отделения, человек-компас</p>
+<p><strong>Любимое оружие:</strong> АКМ (и взгляд, от которого враги сами ложатся)</p>
+<p><strong>Опыт:</strong> 2 года в ABI, плюс 4 года в реальности — горячие точки, горячее сердце</p>
+<p><strong>Навыки:</strong> ведёт отряд даже в полной темноте, ориентируется по запаху страха</p>
+<p><strong>Боевой стиль:</strong> «Шаг влево — засада, шаг вправо — тоже моя идея»</p>
+<p><strong>Легендарный момент:</strong> вывел отряд из окружения с фразой «ща, пацаны, по-пацански»</p>
+<p><strong>Цель:</strong> доказать, что настоящая война — это когда ты командуешь даже над миникартой</p>
+    </div>
+
+    <div id="cs2" class="info-block">
+      <p><strong>Никнейм:</strong> ЯША ЛАВА</p>
+<p><strong>Роль:</strong> Лидер команды, крикер, разруливатель хаоса</p>
+<p><strong>Любимое оружие:</strong> АК-47 (и тяжёлое слово в нужный момент)</p>
+<p><strong>Опыт:</strong> 11 лет — с тех времён, когда Dust2 был только один</p>
+<p><strong>Навыки:</strong> координация, командная дисциплина, clutch-момент под давлением, максимальный entry fire</p>
+<p><strong>Достижения:</strong> выжил после 100+ командных обсуждений тактик, разминировал обстановку в тимспике</p>
+<p><strong>Игровой стиль:</strong> "Пошли-пошли-пошли!", rush B — не обсуждается</p>
+<p><strong>Цель:</strong> держать команду в форме, на морали и без права на отступ</p>
+    </div>
+
+    <a href="../index.html#players" class="back-link">← Назад к игрокам</a>
+  </main>
+
+  <script>
+    const gameSelect = document.getElementById('gameSelect');
+    const infoBlocks = document.querySelectorAll('.info-block');
+
+    gameSelect.addEventListener('change', () => {
+      infoBlocks.forEach(block => block.classList.remove('active'));
+      const selected = gameSelect.value;
+      if (selected) {
+        document.getElementById(selected).classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>

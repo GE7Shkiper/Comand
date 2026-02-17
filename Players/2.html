@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>absosut [Клатчер]</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main>
+    <h1>absosut [Клатчер]</h1>
+    <img src="../avatars/2.jpg" alt="Артур" class="player-photo">
+
+    <div class="game-selector">
+      <label for="gameSelect">Выбери игру:</label>
+      <select id="gameSelect">
+        <option value="">-- Выбери --</option>
+        <option value="cs2">CS2</option>
+      </select>
+    </div>
+
+    <div id="cs2" class="info-block">
+      <p><strong>Никнейм:</strong> absosut</p>
+<p><strong>Роль:</strong> AWP, мастер клатчей, бог таймингов</p>
+<p><strong>Любимое оружие:</strong> AWP (и мышка с замотанной лентой — для стабильности)</p>
+<p><strong>Опыт:</strong> 2 года, известен разворотами 1v5 и бесконечными «last hope» моментами</p>
+<p><strong>Навыки:</strong> пиксельные прострелы, молчание перед бурей, идеальные позиции</p>
+<p><strong>Игровой стиль:</strong> «Тихо — я слышу шаги» → *BAM* минус трое</p>
+<p><strong>Харизма:</strong> говорит мало, стреляет метко, умирает красиво</p>
+<p><strong>Цель:</strong> не дать противнику даже подумать, что у них есть шанс</p>
+    </div>
+
+    <a href="../index.html#players" class="back-link">← Назад к игрокам</a>
+  </main>
+
+  <script>
+    const gameSelect = document.getElementById('gameSelect');
+    const infoBlocks = document.querySelectorAll('.info-block');
+
+    gameSelect.addEventListener('change', () => {
+      infoBlocks.forEach(block => block.classList.remove('active'));
+      const selected = gameSelect.value;
+      if (selected) {
+        document.getElementById(selected).classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>

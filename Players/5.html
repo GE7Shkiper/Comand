@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>POWER Дрищ [ТРЕНЕР]</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <main>
+    <h1>POWER Дрищ [ТРЕНЕР]</h1>
+    <img src="../avatars/5.jpg" alt="POWER Дрищ [ТРЕНЕР]" class="player-photo">
+
+    <div class="game-selector">
+      <label for="gameSelect">Выбери игру:</label>
+      <select id="gameSelect">
+        <option value="">-- Выбери --</option>
+        <option value="abi">ABI</option>
+        <option value="cs2">CS2</option>
+      </select>
+    </div>
+
+    <div id="abi" class="info-block">
+      <p><strong>Никнейм:</strong> [GE-7]Shkiper</p>
+<p><strong>Роль:</strong> Аналитик стратегий (aka "мозг команды")</p>
+<p><strong>Любимое оружие:</strong> Тактическая винтовка (и иногда Ctrl+C / Ctrl+V)</p>
+<p><strong>Опыт:</strong> 3 года (или вечность в онлайн-играх)</p>
+<p><strong>Ключевые навыки:</strong> читать мысли противника, считать до десяти и мастерски откладывать ответственность</p>
+<p><strong>Основные достижения:</strong> выиграл спор с соседями о том, кто круче, и пару раундов в игре</p>
+<p><strong>Сильные стороны:</strong> безотказное прогнозирование провалов, выдача мемов по расписанию</p>
+<p><strong>Стиль игры:</strong> "я здесь просто для атмосферы", но внезапно спасает всю команду</p>
+<p><strong>Любимый режим:</strong> "наблюдатель" — идеально подходит для анализа и комментариев</p>
+<p><strong>Хобби вне игры:</strong> спорить о том, кто из героев круче, и засыпать на клавиатуре</p>
+<p><strong>Цель в команде:</strong> сделать так, чтобы все думали, что он реально что-то решает</p>
+    </div>
+
+    <div id="cs2" class="info-block">
+      <p><strong>Никнейм:</strong> POWER Дрищ [ТРЕНЕР]</p>
+<p><strong>Роль:</strong> Тренер, источник агрессии и мотивации</p>
+<p><strong>Любимое оружие:</strong> M4A1-S (и микрофон для воплей)</p>
+<p><strong>Опыт:</strong> 10 лет в туриках, и ещё столько же в матах</p>
+<p><strong>Ключевые навыки:</strong> заставить команду бегать быстрее, чем они хотят, и срывать нервы противнику</p>
+<p><strong>Основные достижения:</strong> научил игроков не паниковать (почти всегда), чемпион громких оскорблений</p>
+<p><strong>Сильные стороны:</strong> незаменимый «танк» команды, мастер мотивационных речей в стиле «давай, блин!»</p>
+<p><strong>Стиль тренерства:</strong> «Твоя ошибка — моя причина криков»</p>
+<p><strong>Любимый режим:</strong> "Тренировка нервов" и "Перестрелка с криками"</p>
+<p><strong>Хобби вне игры:</strong> подсчитывать очки в споре с женой и повторять «еще раз!»</p>
+<p><strong>Цель в команде:</strong> сделать так, чтобы все боялись и уважали, но всё равно слушались</p>
+
+    </div>
+
+    <a href="../index.html#players" class="back-link">← Назад к игрокам</a>
+  </main>
+
+  <script>
+    const gameSelect = document.getElementById('gameSelect');
+    const infoBlocks = document.querySelectorAll('.info-block');
+
+    gameSelect.addEventListener('change', () => {
+      infoBlocks.forEach(block => block.classList.remove('active'));
+      const selected = gameSelect.value;
+      if (selected) {
+        document.getElementById(selected).classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>
