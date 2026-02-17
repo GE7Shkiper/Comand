@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showPopup(link, data, id) {
     popupAvatar.src = data.img;
     popupName.textContent = data.name;
-    popupName.href = `players/${id}.html`;
+    popupName.href = `Players/${id}.html`;
 
     popupSkills.textContent = data.skills;
     popupExp.textContent = data.experience;
@@ -352,4 +352,5 @@ setupGalleryForSection(target);
     }
   };  
 });
+
 
