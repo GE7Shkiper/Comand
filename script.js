@@ -23,30 +23,29 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   document.querySelectorAll('.players-list li a').forEach(link => {
-    const id = link.dataset.id;
-    if (!id || !playerData[id]) return;
-    const data = playerData[id];
+  const id = link.dataset.id;
+  if (!id || !playerData[id]) return;
+  const data = playerData[id];
 
-    if (isTouch) {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        if (activePlayerId !== id) {
-          activePlayerId = id;
-          showPopup(link, data, id);
-        } else {
-          popup.style.display = 'none';
-          activePlayerId = null;
-        }
-      });
-    } else {
-      link.addEventListener('mouseenter', () => showPopup(link, data, id));
-      link.addEventListener('mouseleave', () => {
-        popup.style.display = 'none';
+  if (isTouch) {
+    link.addEventListener('click', e => {
+      if (activePlayerId !== id) {
+        e.preventDefault(); // блокируем переход только на первый клик
+        activePlayerId = id;
+        showPopup(link, data, id);
+      } else {
+        // второй клик — разрешаем переход
         activePlayerId = null;
-      });
-    }
-  });
-
+      }
+    });
+  } else {
+    link.addEventListener('mouseenter', () => showPopup(link, data, id));
+    link.addEventListener('mouseleave', () => {
+      if (popup) popup.style.display = 'none';
+      activePlayerId = null;
+    });
+  }
+});
   function showPopup(link, data, id) {
     popupAvatar.src = data.img;
     popupName.textContent = data.name;
@@ -353,3 +352,4 @@ setupGalleryForSection(target);
     }
   };  
 });
+
